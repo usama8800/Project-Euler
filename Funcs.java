@@ -7,8 +7,9 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Funcs {
-	
-	public static void main(String[] args) {}
+
+	public static void main(String[] args) {
+	}
 
 	public static void Statistics(String dataString) {
 		String x = dataString;
@@ -37,47 +38,65 @@ public class Funcs {
 	}
 
 	public static long getNShapeNum(int n, int shape) {
-		if (shape == 3) return n * (n + 1) / 2;
-		if (shape == 4) return n * n;
-		if (shape == 5) return n * (3 * n - 1) / 2;
-		if (shape == 6) return n * (2 * n - 1);
-		if (shape == 7) return n * (5 * n - 3) / 2;
-		if (shape == 8) return n * (3 * n - 2);
+		if (shape == 3)
+			return n * (n + 1) / 2;
+		if (shape == 4)
+			return n * n;
+		if (shape == 5)
+			return n * (3 * n - 1) / 2;
+		if (shape == 6)
+			return n * (2 * n - 1);
+		if (shape == 7)
+			return n * (5 * n - 3) / 2;
+		if (shape == 8)
+			return n * (3 * n - 2);
 		return -1;
 	}
 
 	public static ArrayList<Integer> isShapeNum(long num) {
 		ArrayList<Integer> shape = new ArrayList<>();
-		if (num < 1) return shape;
-		if (((Math.sqrt(8 * num + 1) - 1) / 2) % 1 == 0) shape.add(3);
-		else if (Math.sqrt(num) % 1 == 0) shape.add(4);
-		else if (((Math.sqrt(24 * num + 1) + 1) / 6) % 1 == 0) shape.add(5);
-		else if (((Math.sqrt(8 * num + 1) + 1) / 4) % 1 == 0) shape.add(6);
-		else if (((Math.sqrt(40 * num + 9)) + 3) / 10 % 1 == 0) shape.add(7);
-		else if ((Math.sqrt(3 * num + 1) + 1) / 3 % 1 == 0) shape.add(8);
+		if (num < 1)
+			return shape;
+		if (((Math.sqrt(8 * num + 1) - 1) / 2) % 1 == 0)
+			shape.add(3);
+		else if (Math.sqrt(num) % 1 == 0)
+			shape.add(4);
+		else if (((Math.sqrt(24 * num + 1) + 1) / 6) % 1 == 0)
+			shape.add(5);
+		else if (((Math.sqrt(8 * num + 1) + 1) / 4) % 1 == 0)
+			shape.add(6);
+		else if (((Math.sqrt(40 * num + 9)) + 3) / 10 % 1 == 0)
+			shape.add(7);
+		else if ((Math.sqrt(3 * num + 1) + 1) / 3 % 1 == 0)
+			shape.add(8);
 		return shape;
 	}
 
 	public static boolean isPandigital(String num) {
-		if (num.indexOf("0") != -1 || num.length() != 9) return false;
+		if (num.indexOf("0") != -1 || num.length() != 9)
+			return false;
 		ArrayList<String> digits = new ArrayList<String>();
 		Collections.addAll(digits, num.split(""));
 		digits.remove(0);
 		for (int i = 1; i <= 9; i++) {
-			if (!digits.contains(String.valueOf(i))) return false;
+			if (!digits.contains(String.valueOf(i)))
+				return false;
 			digits.remove(digits.indexOf(String.valueOf(i)));
 		}
 		return digits.size() == 0;
 	}
-	
+
 	public static boolean isPrime(int num) {
-		if (num == 2 || num == 3) return true;
-		if (num % 2 == 0 || num < 2) return false;
+		if (num == 2 || num == 3)
+			return true;
+		if (num % 2 == 0 || num < 2)
+			return false;
 		for (int i = 3; i * i <= num; i += 2)
-			if (num % i == 0) return false;
+			if (num % i == 0)
+				return false;
 		return true;
 	}
-	
+
 	public static boolean isPermutation(String num1, String num2) { // 1234 4321
 		String[] num1Sorted = num1.split("");
 		String[] num2Sorted = num2.split("");
@@ -92,7 +111,7 @@ public class Funcs {
 			answer = answer.multiply(new BigInteger(String.valueOf(i)));
 		return answer;
 	}
-	
+
 	public static String nextPermutation(String pp) {
 		int k = 0, l = 0;
 		for (int i = pp.length() - 2; i >= 0; i--) {
@@ -120,7 +139,7 @@ public class Funcs {
 		}
 		return pp;
 	}
-	
+
 	public static String nextRotation(String num) {
 		String[] digits = num.split("");
 		String first = digits[1];
@@ -133,30 +152,33 @@ public class Funcs {
 		}
 		return num;
 	}
-	
+
 	public static int getNPrime(int n, ArrayList<Integer> primes) {
 		fillPrimesToSize(n, primes);
 		return primes.get(n - 1);
 	}
-	
+
 	public static void fillPrimesToSize(int size, ArrayList<Integer> primes) {
 		if (primes.size() == 0) {
 			primes.add(2);
 			primes.add(3);
 		}
 		for (int i = primes.get(primes.size() - 1); size > primes.size(); i += 2)
-			if (isPrime(i) && Collections.binarySearch(primes, i) < 0) primes.add(i);
+			if (isPrime(i) && Collections.binarySearch(primes, i) < 0)
+				primes.add(i);
 	}
 
 	public static void fillPrimesToN(long a, ArrayList<Integer> primes) {
-		if (primes.size() == 0) primes.add(2);
+		if (primes.size() == 0)
+			primes.add(2);
 		int prime = primes.get(primes.size() - 1);
 		while (prime < a) {
 			prime += prime == 2 ? 1 : 2;
-			if (isPrime(prime)) primes.add(prime);
+			if (isPrime(prime))
+				primes.add(prime);
 		}
 	}
-	
+
 	public static String toFraction(double num, ArrayList<Integer> primes) {
 		long d = 1;
 		String stringNum = String.valueOf(num);
@@ -170,7 +192,7 @@ public class Funcs {
 		n /= hcf;
 		return String.format("%s/%s", n, d);
 	}
-	
+
 	public static String toFraction(double input, DecimalFormat df) {
 		int p0 = 1;
 		int q0 = 0;
@@ -178,7 +200,7 @@ public class Funcs {
 		int q1 = 1;
 		int p2;
 		int q2;
-		
+
 		double r = input - p1;
 		double next_cf;
 		while (true) {
@@ -186,19 +208,20 @@ public class Funcs {
 			next_cf = Math.floor(r);
 			p2 = (int) (next_cf * p1 + p0);
 			q2 = (int) (next_cf * q1 + q0);
-			
+
 			// Limit the numerator and denominator to be 256 or less
-			if (p2 > 256 || q2 > 256) break;
-			
+			if (p2 > 256 || q2 > 256)
+				break;
+
 			// remember the last two fractions
 			p0 = p1;
 			p1 = p2;
 			q0 = q1;
 			q1 = q2;
-			
+
 			r -= next_cf;
 		}
-		
+
 		input = (double) p1 / q1;
 		// hard upper and lower bounds for ratio
 		// if (input > 256.0) {
@@ -209,7 +232,8 @@ public class Funcs {
 		// q1 = 256;
 		// }
 		String ans = String.valueOf(p1);
-		if (q1 != 1) ans += "/" + q1;
+		if (q1 != 1)
+			ans += "/" + q1;
 		return ans;
 	}
 
@@ -220,7 +244,8 @@ public class Funcs {
 	// int counter = 0;
 	// String n = String.valueOf(num);
 	// System.out.println(n);
-	// if (n.length() - n.indexOf(".") + 1 > 14) n = n.substring(0, n.indexOf(".") + 15);
+	// if (n.length() - n.indexOf(".") + 1 > 14) n = n.substring(0,
+	// n.indexOf(".") + 15);
 	// System.out.println(n);
 	// String ans = df.format(num);
 	// do {
@@ -233,16 +258,20 @@ public class Funcs {
 	// counter++;
 	// // if (counter > 1000) return ans;
 	// } while (true);
-	// if (denominator != 0) if (denominator < 0 && numerator > 0) ans = String.format("%d/%s", -numerator, df.format(-denominator));
+	// if (denominator != 0) if (denominator < 0 && numerator > 0) ans =
+	// String.format("%d/%s", -numerator, df.format(-denominator));
 	// else ans = String.format("%d/%s", numerator, df.format(denominator));
 	// return ans;
 	// }
 
-	/** Highest Common Factor or Greatest Common Divisor
+	/**
+	 * Highest Common Factor or Greatest Common Divisor
+	 * 
 	 * @param a
 	 * @param b
 	 * @param primes
-	 * @return hcf of a and b */
+	 * @return hcf of a and b
+	 */
 	public static long hcf(long a, long b, ArrayList<Integer> primes) {
 		ArrayList<Integer> commonFactors = new ArrayList<>();
 		ArrayList<Integer> pfsa = primeFactors(a, primes, true);
@@ -257,10 +286,12 @@ public class Funcs {
 			hcf *= integer;
 		return hcf;
 	}
-	
-	/** @param num
-	 * @return Sum of all digits in num */
-	
+
+	/**
+	 * @param num
+	 * @return Sum of all digits in num
+	 */
+
 	public static int digitSum(String num) {
 		int sum = 0;
 		for (int i = 0; i < num.length(); i++)
@@ -268,12 +299,14 @@ public class Funcs {
 		return sum;
 	}
 
-	/** @param string
-	 * @return string == string.reverse() */
+	/**
+	 * @param string
+	 * @return string == string.reverse()
+	 */
 	public static boolean isPalindromic(String string) {
 		return new StringBuilder(string).reverse().toString().equals(string);
 	}
-	
+
 	public static ArrayList<Integer> primeFactors(long a, ArrayList<Integer> primes, boolean dublicates) {
 		ArrayList<Integer> pfs = new ArrayList<Integer>();
 		Funcs.fillPrimesToN(a, primes);
@@ -281,15 +314,17 @@ public class Funcs {
 			for (int i = 0; i < primes.size(); i++) {
 				int prime = primes.get(i);
 				if (a % prime == 0) {
-					if (dublicates) pfs.add(prime);
-					else if (!pfs.contains(prime)) pfs.add(prime);
+					if (dublicates)
+						pfs.add(prime);
+					else if (!pfs.contains(prime))
+						pfs.add(prime);
 					a /= prime;
 				}
 			}
 		}
 		return pfs;
 	}
-	
+
 	public static ArrayList<Integer> primeFactorize(long a, ArrayList<Integer> primes) {
 		ArrayList<Integer> pfs = new ArrayList<>();
 		Funcs.fillPrimesToN(a, primes);
@@ -308,23 +343,27 @@ public class Funcs {
 
 	public static int getOCN(ArrayList<Integer> ocns) { // Odd Composite Number
 		int size = ocns.size();
-		if (size == 0) ocns.add(9);
+		if (size == 0)
+			ocns.add(9);
 		else {
 			int ocn = ocns.get(size - 1);
 			while (size == ocns.size()) {
 				ocn += 2;
-				if (!Funcs.isPrime(ocn)) ocns.add(ocn);
+				if (!Funcs.isPrime(ocn))
+					ocns.add(ocn);
 			}
 		}
 		return ocns.get(ocns.size() - 1);
 	}
-	
+
 	public static BigInteger nCr(int n, int r) {
-		if (r == 0 || r == n) return BigInteger.ONE;
-		if (r > n) return BigInteger.ZERO;
+		if (r == 0 || r == n)
+			return BigInteger.ONE;
+		if (r > n)
+			return BigInteger.ZERO;
 		return factorial(n).divide(factorial(r).multiply(factorial(n - r))); // n!/(r!*(n-r)!)
 	}
-	
+
 	public static String sortString(String string) {
 		char[] charArray = string.toCharArray();
 		Arrays.sort(charArray);
@@ -335,30 +374,31 @@ public class Funcs {
 		private int numerator;
 		private int denominator;
 		private ArrayList<Integer> primes = null;
-		
+
 		public Fraction(int n, int d, ArrayList<Integer> primes) {
 			numerator = n;
 			denominator = d;
 			this.primes = primes;
 		}
-		
+
 		public Fraction(String fraction, ArrayList<Integer> primes) {
 			numerator = Integer.parseInt(fraction.substring(0, fraction.indexOf("/")));
 			denominator = Integer.parseInt(fraction.substring(fraction.indexOf("/") + 1));
 			this.primes = primes;
 		}
-		
+
 		public Fraction(int n, Fraction d, ArrayList<Integer> primes) {
 			numerator = n * d.denominator;
 			denominator = d.numerator;
 			this.primes = primes;
 		}
-		
+
 		public Fraction add(Fraction f2) {
-			Fraction r = new Fraction((numerator * f2.denominator) + (f2.numerator * denominator), (denominator * f2.denominator), primes);
+			Fraction r = new Fraction((numerator * f2.denominator) + (f2.numerator * denominator),
+					(denominator * f2.denominator), primes);
 			return r;
 		}
-		
+
 		public Fraction add(int num) {
 			Fraction r = new Fraction(numerator + (denominator * num), denominator, primes);
 			return r;
@@ -369,11 +409,11 @@ public class Funcs {
 			double ans = Double.parseDouble(df.format((double) numerator / denominator));
 			return ans;
 		}
-		
+
 		public int getNumerator() {
 			return numerator;
 		}
-		
+
 		public int getDenominator() {
 			return denominator;
 		}
@@ -383,7 +423,8 @@ public class Funcs {
 			long n = numerator / hcf;
 			long d = denominator / hcf;
 			String fraction = String.valueOf(n);
-			if (d != 1) fraction += "/" + d;
+			if (d != 1)
+				fraction += "/" + d;
 			return fraction;
 		}
 	}
