@@ -1,15 +1,15 @@
 import java.math.BigInteger;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Queue;
 import java.util.Scanner;
+import java.util.Stack;
 
 public class Funcs {
-
-	public static void main(String[] args) {
-	}
 
 	public static void Statistics(String dataString) {
 		String x = dataString;
@@ -35,6 +35,10 @@ public class Funcs {
 		double sd = Math.sqrt(variance);
 		sd = Double.parseDouble(df.format(sd));
 		System.out.printf("Average: %.1f\nVariance: %.1f\nStandard Deviation: %.1f", average, variance, sd);
+	}
+
+	public static double round(double num, int decimals) {
+		return Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals);
 	}
 
 	public static long getNShapeNum(int n, int shape) {
@@ -354,6 +358,56 @@ public class Funcs {
 			}
 		}
 		return ocns.get(ocns.size() - 1);
+	}
+
+	public static double postFixToNumber(String postFix) {
+		Queue<String> q = new ArrayDeque<>();
+		Stack<String> s = new Stack<>();
+		q.addAll(Arrays.asList(postFix.split(" ")));
+		String[] op = { "+", "-", "*", "/", "sqrt" };
+		ArrayList<String> ops = new ArrayList<>();
+		ops.addAll(Arrays.asList(op));
+		return Double.parseDouble(pftn(q, s, ops));
+	}
+
+	private static String pftn(Queue<String> q, Stack<String> s, ArrayList<String> operators) {
+		if (q.size() > 0) {
+			String x = q.poll();
+			if (operators.contains(x)) {
+				if (x.equals("!")) {
+					double num = Double.parseDouble(s.pop());
+					s.push(String.valueOf(factorial((int) num)));
+				}
+				if (x.equals("sqrt")) {
+					double num = Double.parseDouble(s.pop());
+					s.push(String.valueOf(Math.sqrt(num)));
+				}
+				if (x.equals("+")) {
+					double num2 = Double.parseDouble(s.pop());
+					double num1 = Double.parseDouble(s.pop());
+					s.push(String.valueOf((num1 + num2)));
+				}
+				if (x.equals("-")) {
+					double num2 = Double.parseDouble(s.pop());
+					double num1 = Double.parseDouble(s.pop());
+					s.push(String.valueOf((num1 - num2)));
+				}
+				if (x.equals("*")) {
+					double num2 = Double.parseDouble(s.pop());
+					double num1 = Double.parseDouble(s.pop());
+					s.push(String.valueOf((num1 * num2)));
+				}
+				if (x.equals("/")) {
+					double num2 = Double.parseDouble(s.pop());
+					double num1 = Double.parseDouble(s.pop());
+					s.push(String.valueOf((num1 / num2)));
+				}
+			} else
+				s.push(x);
+		} else {
+			return s.pop();
+		}
+		return pftn(q, s, operators);
 	}
 
 	public static BigInteger nCr(int n, int r) {

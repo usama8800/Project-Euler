@@ -3,34 +3,33 @@ import java.util.ArrayList;
 public class Problem_64 {
 
 	public static void main(String[] args) {
-		int count = 0;
-		for (int i = 0; i <= 10000; i++) {
-			System.out.println(i);
-			if (CFE(Math.sqrt(i), new ArrayList<>(), new ArrayList<>()).size() % 2 == 0)
-				count++;
-			try {
-				Thread.sleep(300);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		System.out.println(count);
-		// System.out.println(CFE(Math.sqrt(95), new ArrayList<>(), new
-		// ArrayList<>()).size());
+		// int count = 0;
+		// for (int i = 0; i <= 10000; i++) {
+		// System.out.println(i);
+		// if (CFE(i + " sqrt", new ArrayList<>(), "").size() % 2 == 0)
+		// count++;
+		// }
+		// System.out.println(count);
+		System.out.println(CFE("67 sqrt", new ArrayList<>(), ""));
 	}
 
-	public static ArrayList<Integer> CFE(double m, ArrayList<Integer> list, ArrayList<Double> remainders) {
+	public static ArrayList<Integer> CFE(String x, ArrayList<Integer> list, String endPoint) {
+		double m = Funcs.postFixToNumber(x);
 		int n = (int) m;
 		list.add(n);
-		m = 1 / (m - n);
-		remainders.add(m);
-		if (round(m, 3) == round(remainders.get(0), 3) && remainders.size() != 1)
+		m = 1 / (m - n); // x = "7 sqrt"
+		x = optimizePostFix(String.format("1 %s %d - /", x, n));
+		System.out.println(x);
+		if (endPoint.equals(""))
+			endPoint = x;
+		if (Funcs.round(Funcs.postFixToNumber(x), 5) == Funcs.round(Funcs.postFixToNumber(endPoint), 5)
+				&& list.size() != 1)
 			return list;
 		else
-			return CFE(m, list, remainders);
+			return CFE(x, list, endPoint);
 	}
 
-	public static double round(double num, int decimals) {
-		return Math.round(num * Math.pow(10, decimals)) / Math.pow(10, decimals);
+	public static String optimizePostFix(String x) {
+		return x;
 	}
 }
