@@ -1,46 +1,71 @@
+import java.math.BigInteger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class Problem_65 {
-	/* The square root of 2 can be written as an infinite continued fraction.												@formatter:off
-	 * √2 = 1 + 1
-	 * 			2 + 1
-	 * 				2 + 1
-	 * 					2 + 1
-	 * 						2 + ...
-	 * 
-	 * The infinite continued fraction can be written, √2 = [1;(2)], (2) indicates that 2 repeats ad infinitum. In a similar way, √23 = [4;(1,3,1,8)].
-	 * 
-	 * It turns out that the sequence of partial values of continued fractions for square roots provide the best rational approximations. Let us consider the convergents
-	 * for √2.
-	 * 
-	 * 1 +	1 = 3/2
-	 * 		2
-	 * 
-	 * 1 +	1		= 7/5
-	 * 		2 + 1
-	 * 			2
-	 * 
-	 * 1 +	1			= 17/12
-	 * 		2 + 1
-	 * 			2 + 1
-	 * 				2
-	 * 
-	 * 1 +	1				= 41/29
-	 * 		2 + 1
-	 * 			2 + 1
-	 * 				2 + 1
-	 * 					2
-	 *//*																												@formatter:on
-	 * Hence the sequence of the first ten convergents for √2 are:
-	 * 
-	 * 1, 3/2, 7/5, 17/12, 41/29, 99/70, 239/169, 577/408, 1393/985, 3363/2378, ...
-	 * What is most surprising is that the important mathematical constant,
-	 * e = [2; 1,2,1, 1,4,1, 1,6,1 , ... , 1,2k,1, ...].
-	 * 
-	 * The first ten terms in the sequence of convergents for e are:
-	 * 
-	 * 2, 3, 8/3, 11/4, 19/7, 87/32, 106/39, 193/71, 1264/465, 1457/536, ...
-	 * The sum of digits in the numerator of the 10th convergent is 1+4+5+7=17.
-	 * 
-	 * Find the sum of digits in the numerator of the 100th convergent of the continued fraction for e. */
+	
 	public static void main(String[] args) {
+		String frac = Funcs.postFixToInfix(getSum(100, ""));
+		String[] part = Funcs.getPostFixFraction(frac);
+		BigInteger bigNum = new BigInteger(part[0]);
+		BigInteger bigDen = new BigInteger(part[1]);
+		System.out.println(Funcs.digitSum(bigNum.divide(bigNum.gcd(bigDen)).toString()));
+	}
+	
+	public static String getSum(int c, String sum) {
+		if (sum.equals("")) sum = simplifyPostfix(String.format("1 %d /", getN(c)));
+		else {
+			if (c == 1) sum = simplifyPostfix(String.format("%s %d +", sum, getN(c)));
+			else sum = simplifyPostfix(String.format("1 %s %d + /", sum, getN(c)));
+		}
+		if (c > 1) return getSum(c - 1, sum);
+		else return sum;
+	}
+	
+	static Pattern p1 = Pattern.compile("1 (\\d+) (\\d+) \\+ \\/");
+	static Pattern p2 = Pattern.compile("1 (\\d+) (\\d+) \\/ (\\d+) \\+ \\/");
+	static Pattern p3 = Pattern.compile("(\\d+) (\\d+) \\/ (\\d+) \\+");
+	
+	public static String simplifyPostfix(String postfix) {
+		if (postfix.equals("1 1 /")) return "1";
+		Matcher m1 = p1.matcher(postfix);
+		if (m1.find()) {
+			String a = m1.group(1);
+			String b = m1.group(2);
+			BigInteger aInt = new BigInteger(a);
+			BigInteger bInt = new BigInteger(b);
+			return String.format("1 %s /", aInt.add(bInt));
+		}
+		Matcher m2 = p2.matcher(postfix);
+		if (m2.find()) {
+			String a = m2.group(1);
+			String b = m2.group(2);
+			String c = m2.group(3);
+			BigInteger aInt = new BigInteger(a);
+			BigInteger bInt = new BigInteger(b);
+			BigInteger cInt = new BigInteger(c);
+			BigInteger dInt = aInt.add(bInt.multiply(cInt));
+			// long hcf = Funcs.hcf(bInt, dInt, primes);
+			return String.format("%s %s /", bInt, dInt);
+		}
+		Matcher m3 = p3.matcher(postfix);
+		if (m3.find()) {
+			String a = m3.group(1);
+			String b = m3.group(2);
+			String c = m3.group(3);
+			BigInteger aInt = new BigInteger(a);
+			BigInteger bInt = new BigInteger(b);
+			BigInteger cInt = new BigInteger(c);
+			BigInteger dInt = aInt.add(bInt.multiply(cInt));
+			// long hcf = Funcs.hcf(bInt, dInt, primes);
+			return String.format("%s %s /", dInt, bInt);
+		}
+		return null;
+	}
+	
+	public static int getN(int c) {
+		if (c == 1) return 2;
+		if (c % 3 == 0) return 2 * c / 3;
+		return 1;
 	}
 }
